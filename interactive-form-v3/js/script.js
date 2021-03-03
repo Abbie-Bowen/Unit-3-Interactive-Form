@@ -198,17 +198,10 @@ const allActivities = document.querySelectorAll('#activities input');
 // PAYMENT SECTION
   const paymentMethodInput = document.querySelector('#payment');
   const payWithCreditCard = document.querySelector('#payment option[value="credit-card"]')
-  // const expirationMonthInput = document.querySelector('#exp-month');
-  // const expirationYearInput = document.querySelector('#exp-year');
-  // const creditCardNumberInput = document.querySelector('#cc-num');
-  // const zipCodeInput = document.querySelector('#zip');
-  // const cvvInput = document.querySelector('#cvv')
   // I'm going to pay with <select> element to listen to changes
   //   when a change => hide all payment sections except the selected one
 
-  let paymentDiv = document.querySelectorAll('.payment-methods>div:nth-last-child(-n+3)');
-  const paymentArray = Array.prototype.slice.call(paymentDiv);
-  console.log(Array.isArray(paymentArray));
+  const paymentDiv = document.querySelectorAll('.payment-methods>div:nth-last-child(-n+3)');
   initializePaymentSection();
 
   function initializePaymentSection() {
@@ -223,31 +216,46 @@ const allActivities = document.querySelectorAll('#activities input');
       paymentDiv[i].style.display = 'none';
     }
   }
-
+//helper function below from https://developer.mozilla.org/en-US/docs/Web/API/NodeList/values
   function showPaymentDiv(paymentSelection) {
-      console.log(paymentDiv); //nodelist
-      const selectedDiv = paymentArray.filter(function(selection) {
-      return selection.id == `${paymentSelection}`;
-    });
-      console.log(selectedDiv); //array
-      // paymentDiv = Object.assign({},selectedDiv); //
-      selectedDiv.style.display = 'inherit';
+      for (let div of paymentDiv) {
+        if (div.id === paymentSelection) {
+          div.style.display = 'inherit';
+        };
+      }
+    }
 
+  paymentMethodInput.addEventListener('change', e => {
+    hideAllPaymentDivs();
+    let paymentSelection = e.target.value;
+    showPaymentDiv(paymentSelection);
+  });
+
+// Credit Card Information validation
+const creditCardNumberInput = document.querySelector('#cc-num');
+const zipCodeInput = document.querySelector('#zip');
+const cvvInput = document.querySelector('#cvv');
+
+function isValidCardNumber(userCreditCard) {
+  return /^\d{13,16}$/.test(userCreditCard);
 }
+creditCardNumberInput.addEventListener("keyup", createListener(isValidCardNumber));
 
-  // paymentMethodInput.addEventListener('change', e => {
-  //   let paymentSelection = e.target.value;
-  //   showPaymentDiv(paymentSelection);
-  // })
+function isValidZip(userZip) {
+  return /^\d{5}$/.test(userZip);
+}
+zipCodeInput.addEventListener("keyup", createListener(isValidZip));
 
-// //form validation
-//   if credit card is the selected payment method,
-//     card number field must contain a 13-16 digit number, no dashes or spaces
-//     zip code must contain 5 digit Number
-//     cvv field must contain a 3 digit Number
+function isValidCvv(userCvv) {
+  return /^\d{3}$/.test(userCvv);
+}
+cvvInput.addEventListener("keyup", createListener(isValidCvv));
+
 
 // SUBMIT BUTTON FORM VALIDATION
 const formElement = document.querySelector("form");
+
+formElement.addEventListener('submit', )
 // form element listen for the submit event
 //   when submit=>
 //     check name validation, if false, return
