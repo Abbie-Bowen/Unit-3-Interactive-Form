@@ -10,48 +10,13 @@ const userEmailInput = document.querySelector('#email');
   function isValidName (userName) {
     return /^[a-zA-Z][a-zA-Z\s]*$/.test(userName);
   }
-  //real time error messaging
-  userNameInput.addEventListener("keyup", createListener(isValidName));
 
 //EMAIL FIELD
   //email validation: a few characters followed by @ followed by a few more characters and a . and more characters
   function isValidEmail(userEmail) {
     return /[^@]+@[^@.]+\.[a-z]+$/i.test(userEmail);
   }
-  //real time error messaging
-  userEmailInput.addEventListener("keyup", createListener(isValidEmail));
 
-/*BASIC INFO SECTION VALIDATION HELPER FUNCTIONS : the following helper functions are
-based on the funtions used in the Regular Expressions in Javascript lessons*/
-  //helper function to determine whether input is valid
-  function createListener(validator) {
-    return e => {
-      const text = e.target.value;
-      const valid = validator(text);
-      const show = !valid;
-      const element = e.target;
-      if (show) {
-        showHint(element);
-      } if (!show) {
-        hideHint(element);
-      }
-    };
-  }
-
-  // helper function to  update styles when errors are detected
-  function showHint(element) {
-    let parentElement = element.parentNode;
-    parentElement.className = "not-valid";
-    let hint = parentElement.lastElementChild;
-    hint.style.display = "inherit";
-  }
-  // helper function to update styles when errors are resolved
-  function hideHint(element) {
-    let parentElement = element.parentNode;
-    parentElement.className = "valid";
-    let hint = parentElement.lastElementChild;
-    hint.style.display = "none";
-  }
 
 // JOB ROLE SECTION
 const jobRoleInput = document.querySelector('#title');
@@ -116,11 +81,11 @@ const allActivities = document.querySelectorAll('#activities input');
     const activityCost = +activity.dataset.cost;
     if (activity.name === "all" && activity.checked) {
         mainEventChecked(activity, activityCost);
-    } if (activity.name === "all" && !activity.checked) {
+    } else if (activity.name === "all" && !activity.checked) {
         mainEventUnchecked(activity, activityCost);
-    } if (activity.name !== "all" && activity.checked) {
+    } else if (activity.name !== "all" && activity.checked) {
         eventChecked(activity, activityCost);
-    } if (activity.name !== "all" && !activity.checked) {
+    } else if (activity.name !== "all" && !activity.checked) {
         eventUnchecked(activity, activityCost);
     }
   costTotalHTML.innerHTML=(`Total: $${totalCost}`);
@@ -198,9 +163,7 @@ const allActivities = document.querySelectorAll('#activities input');
 // PAYMENT SECTION
   const paymentMethodInput = document.querySelector('#payment');
   const payWithCreditCard = document.querySelector('#payment option[value="credit-card"]')
-  // I'm going to pay with <select> element to listen to changes
-  //   when a change => hide all payment sections except the selected one
-
+//dropdown payment method selection shows selected payment method and hids nonselected options
   const paymentDiv = document.querySelectorAll('.payment-methods>div:nth-last-child(-n+3)');
   initializePaymentSection();
 
@@ -239,23 +202,83 @@ const cvvInput = document.querySelector('#cvv');
 function isValidCardNumber(userCreditCard) {
   return /^\d{13,16}$/.test(userCreditCard);
 }
-creditCardNumberInput.addEventListener("keyup", createListener(isValidCardNumber));
 
 function isValidZip(userZip) {
   return /^\d{5}$/.test(userZip);
 }
-zipCodeInput.addEventListener("keyup", createListener(isValidZip));
 
 function isValidCvv(userCvv) {
   return /^\d{3}$/.test(userCvv);
 }
-cvvInput.addEventListener("keyup", createListener(isValidCvv));
 
+
+//REAL TIME VALIDATION
+const formElement = document.querySelector("form");
+// declare constants as false
+let name;
+let email;
+let creditCard;
+let zipCode;
+let cvv;
+
+// listen for all form events and use if statements to determine validity
+formElement.addEventListener('keyup', e => {
+    if (e.target === userNameInput) {
+      name = createListener(isValidName, e);
+      console.log(name);
+    } else if (e.target === userEmailInput) {
+      email = createListener(isValidEmail, e);
+      console.log(email);
+    } else if (e.target === creditCardNumberInput) {
+      creditCard = createListener(isValidCardNumber, e);
+      console.log(creditCard);
+    } else if (e.target === zipCodeInput) {
+      zipCode = createListener(isValidZip, e);
+      console.log(zipCode);
+    } else if (e.target === cvvInput) {
+      cvv = createListener(isValidCvv, e);
+      console.log(cvv);
+    }
+});
+
+/*REAL TIME VALIDATION HELPER FUNCTIONS : the following helper functions are
+based on the funtions used in the Regular Expressions in Javascript lessons*/
+  //helper function to determine whether input is valid
+  function createListener(validator, e) {
+      const text = e.target.value;
+      const valid = validator(text);
+      const show = !valid;
+      const element = e.target;
+      if (show) {
+        showHint(element);
+      } if (!show) {
+        hideHint(element);
+      }
+      return valid;
+    };
+
+  // helper function to  update styles when errors are detected
+  function showHint(element) {
+    let parentElement = element.parentNode;
+    parentElement.className = "not-valid";
+    let hint = parentElement.lastElementChild;
+    hint.style.display = "inherit";
+  }
+  // helper function to update styles when errors are resolved
+  function hideHint(element) {
+    let parentElement = element.parentNode;
+    parentElement.className = "valid";
+    let hint = parentElement.lastElementChild;
+    hint.style.display = "none";
+  }
 
 // SUBMIT BUTTON FORM VALIDATION
-const formElement = document.querySelector("form");
+formElement.addEventListener('submit', e => {
+    if (!name || !email || !creditCard || !zipCode || !cvv) {
+      preventDefault();
+    }
 
-formElement.addEventListener('submit', )
+})
 // form element listen for the submit event
 //   when submit=>
 //     check name validation, if false, return
