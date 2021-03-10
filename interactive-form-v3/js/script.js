@@ -11,9 +11,9 @@ const userEmailInput = document.querySelector('#email');
     if (/^[a-zA-Z][a-zA-Z\s]*$/.test(userName)) {
       return true;
     } else if (!/^[a-zA-Z][a-zA-Z\s]*$/.test(userName)) {
-      if (/^[\s]*$/.test(userName)) {
+      if (userName === "") {
         return "blank";
-      } else if (/\d+/.test(userName)) {
+      } else if (/[\d]+/.test(userName)) {
        return "number";
       }
     }
@@ -21,19 +21,16 @@ const userEmailInput = document.querySelector('#email');
 
 //EMAIL FIELD
   //email validation: a few characters followed by @ followed by a few more characters and a . and more characters
-  userEmailInput.addEventListener("focusin", e => {
-        let parentElement = e.target.parentNode;
-        let hint = document.createElement("span");
-        hint.innerHTML = `Email must contain a . and an @ for correct formatting.`;
-        parentElement.appendChild(hint);
-        hint.style.display = "inherit";
+  userEmailInput.addEventListener("focus", e => {
+        let emailFormattingHint = document.querySelector("#email-hint");
+        // emailFormattingHint.className = "astrisk";
+        emailFormattingHint.innerHTML = `Email must contain a <strong>.</strong> and an <strong>@</strong> for correct formatting.`;
+        emailFormattingHint.style.display = "label";
   });
 
   function isValidEmail(userEmail) {
     return /[^@]+@[^@.]+\.[a-z]+$/i.test(userEmail);
-    //if contains @ & . (link to, hide @. hint)
-    //if '' return blank (link to, show hint: cannot be blank)
-  }
+}
 
 
 // JOB ROLE SECTION
@@ -224,10 +221,13 @@ const allActivities = document.querySelectorAll('#activities input');
 
   // listen for all form events and use if statements to determine validity
   //inspired by https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
+
+  //NEED TO SPLIT OUT INPUT BOXES//
   formElement.addEventListener('keyup', e => {
+    if (e.value !== 9) {
       if (e.target === userNameInput) {
         name = createListener(isValidName, e);
-      } else if (e.target === userEmailInput) {
+      } else if (e.target === userEmailInput, e) {
         email = createListener(isValidEmail, e);
       } else if (e.target === creditCardNumberInput) {
         creditCard = createListener(isValidCardNumber, e);
@@ -236,6 +236,7 @@ const allActivities = document.querySelectorAll('#activities input');
       } else if (e.target === cvvInput) {
         cvv = createListener(isValidCvv, e);
       }
+    }
   });
 
 /*REAL TIME VALIDATION HELPER FUNCTIONS : the following helper functions are
@@ -245,7 +246,7 @@ based on the funtions used in the Regular Expressions in Javascript lessons*/
       const element = e.target;
       const text = element.value;
       const valid = validator(text);
-      if (valid) {
+      if (valid === true) {
           hideHint(element);
           return valid;
       } else if (valid === "blank") {
@@ -266,6 +267,8 @@ based on the funtions used in the Regular Expressions in Javascript lessons*/
           parentElement.appendChild(hint);
           hint.style.display = "inherit";
           return valid;
+        } else if (valid === false) {
+          showHint(element);
     }
     };
 
