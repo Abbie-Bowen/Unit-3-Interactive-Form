@@ -177,6 +177,7 @@ const allActivities = document.querySelectorAll('#activities input');
       });
     }
 
+
 // PAYMENT SECTION
   const paymentMethodInput = document.querySelector('#payment');
   const payWithCreditCard = document.querySelector('#payment option[value="credit-card"]')
@@ -352,6 +353,10 @@ based on the funtions used in the Regular Expressions in Javascript lessons*/
       hintManagement(validator(text), parentElement);
     };
 
+    //helper function to manage different validation feedback
+    /*QUESTION: this function seems like it would be easier to read using a switch,
+    but I can't pass two argumnts through a switch. Is the following function the
+    best way to do this?*/
     function hintManagement(valid, parentElement) {
       if (valid === true) {
           return valid;
@@ -365,17 +370,17 @@ based on the funtions used in the Regular Expressions in Javascript lessons*/
           let hint = parentElement.querySelector('.number')
           hint.style.display = "inherit";
           return valid;
-        } else if (valid === "not a number") {
+      } else if (valid === "not a number") {
           parentElement.className = 'not-valid';
           let hint = parentElement.querySelector('.num-only')
           hint.style.display = "inherit";
           return valid;
-        } else if (valid === "in progress") {
+      } else if (valid === "in progress") {
           parentElement.className = 'not-valid';
           let defaultHint = parentElement.querySelector('.hint');
           defaultHint.style.display = "inherit";
           return valid;
-        } else if (valid === false) {
+      } else if (valid === false) {
           parentElement.className = "not-valid";
           let defaultHint = parentElement.querySelector('.hint');
           defaultHint.style.display = "inherit";
@@ -418,11 +423,11 @@ formElement.addEventListener('submit', e => {
   name = hintManagement(isValidName(userNameInput.value), userNameInput.parentNode);
   email = hintManagement(isValidEmail(userEmailInput.value), userEmailInput.parentNode);
 
-  if (!name) {
+  if (name !== true) {
     e.preventDefault();
   }
 
-  if (!email) {
+  if (email !== true) {
       e.preventDefault();
     }
 
