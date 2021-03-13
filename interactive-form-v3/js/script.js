@@ -66,9 +66,6 @@ const shirtColorInput =document.querySelector('#shirt-colors');
   //helper function to toggle color theme displayed
   function toggleColors (colorTheme) {
     const allColors = document.querySelectorAll('#color option[data-theme]');
-  /*QUESTION: How can I pull the data-theme name and run the following using a variable?
-  Template literals don't seem to work in querySelectors. Is there a better & more concise way
-  that isn't JQuery?*/
     const jsPuns = document.querySelectorAll('#color option[data-theme="js puns"]');
     const heartJs = document.querySelectorAll('#color option[data-theme="heart js"]');
     for (let i=0; i<allColors.length; i++) {
@@ -93,7 +90,10 @@ const allActivities = document.querySelectorAll('#activities input');
   /*When an activity is selected, the total cost increases by the
   cost of that activity. When an activity is unselected, the total cost decreases by the cost of that
   activity. If an activity is selected that occurs at a conflicting time at another activity, the
-  conflicting activity is disabled.*/
+  conflicting activity is disabled.
+  From my understanding, registering for the Main Event means that sub events can't be
+  selected because it includes all of them. I'm not sure if that is the correct understanding,
+  but that is the assumption the following is based on.*/
   let totalCost = 0;
   registerForActivities.addEventListener('change', e => {
     const activity=e.target;
@@ -139,7 +139,7 @@ const allActivities = document.querySelectorAll('#activities input');
     totalCost -= activityCost;
     reactivatePreviousConflicts(activity);
   }
-
+//deactivates conflicting events when one option is selected.
   function removeConflictingActivities(activity) {
     const schedule = activity.dataset.dayAndTime;
     for (let i=1; i<allActivities.length; i++) {
@@ -150,7 +150,7 @@ const allActivities = document.querySelectorAll('#activities input');
       }
     }
   }
-
+//allows users to select previously deactivated events when an option is unselected.
   function reactivatePreviousConflicts(activity) {
     const schedule = activity.dataset.dayAndTime;
     const allActivities = document.querySelectorAll('#activities input');
@@ -163,7 +163,7 @@ const allActivities = document.querySelectorAll('#activities input');
     }
   }
 
-  //obvious focus state
+  //obvious focus state for activity section.
   const checkbox = document.querySelectorAll('input[type="checkbox"]');
   for (i=0; i<checkbox.length; i++) {
       checkbox[i].addEventListener('focus', e=>{
@@ -281,7 +281,7 @@ const allActivities = document.querySelectorAll('#activities input');
   let zipCode;
   let cvv;
 
-  //append error messaging for real time user feedback
+//append error messaging for real time user feedback
 appendErrorMessaging();
 
 function appendErrorMessaging() {
@@ -389,14 +389,6 @@ based on the funtions used in the Regular Expressions in Javascript lessons*/
     }
     }
 
-  // DEFAULT HTML HINT helper function to update styles when errors are detected
-  function showDefaultHint(element, parentElement) {
-    parentElement.className = "valid";
-  }
-//BLANK FIELD helper function to create and append hint
-  function showBlankHint(element, parentElement) {
-
-  }
   // helper function to update styles when errors are resolved
   function hideHint(element, parentElement) {
     parentElement.className = "valid";
