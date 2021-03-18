@@ -3,54 +3,60 @@
 // BASIC INFO SECTION
 const userNameInput = document.querySelector('#name');
 const userEmailInput = document.querySelector('#email');
-  //NAME FIELD
+//NAME FIELD
   //default focus on the name field
   userNameInput.focus();
   //name valdiation: name field cannot be blank, empty, or contain numbers
+  //Feedback edits: extra if test to determine false is unnecessary
+  //feedback edits: return consistent types --either boolean or string
   function isValidName (userName) {
     if (/^[a-zA-Z][a-zA-Z\s]*$/.test(userName)) {
-      return true;
-    } else if (!/^[a-zA-Z][a-zA-Z\s]*$/.test(userName)) {
-      if (userName === "") {
-        return "blank";
-      } else if (/[\d]+/.test(userName)) {
-       return "number";
-      }
+      return "valid";
+    } else if (userName === "") {
+      return "blank";
+    } else if (/[\d]+/.test(userName)) {
+      return "number";
+    } else {
+      return "invalid";
     }
   }
 
 //EMAIL FIELD
   //when user starts entering email, add clear validation requirements
   userEmailInput.addEventListener("focus", e => {
-        let emailFormattingHint = document.querySelector("#email-hint");
-        emailFormattingHint.innerHTML = `Email must contain <strong>.</strong> and <strong>@</strong> for correct formatting.`;
-        emailFormattingHint.style.display = "inline";
-        emailFormattingHint.style.position = "relative";
-        emailFormattingHint.style.color = "black";
+    let emailFormattingHint = document.querySelector("#email-hint");
+    emailFormattingHint.innerHTML = `Email must contain <strong>.</strong> and <strong>@</strong> for correct formatting.`;
+    emailFormattingHint.style.display = "inline";
+    emailFormattingHint.style.position = "relative";
+    emailFormattingHint.style.color = "black";
   });
   //email validation: a few characters followed by @ followed by a few more characters and a . and more characters
+  //feedback edits: return consistent types --either boolean or string
   function isValidEmail(userEmail) {
     if (userEmail === "") {
       return "blank";
+    } else if (/[^@]+@[^@.]+\.[a-z]+$/i.test(userEmail)) {
+      return "valid";
     } else {
-    return /[^@]+@[^@.]+\.[a-z]+$/i.test(userEmail);
+      return "invalid";
+    }
   }
-}
 
 
 // JOB ROLE SECTION
 const jobRoleInput = document.querySelector('#title');
 const otherJobRoleInput = document.querySelector('#other-job-role');
-  //if other job role is selected, text box appears for user
-  otherJobRoleInput.style.display = 'none';
 
-  jobRoleInput.addEventListener('change', e => {
-    if (e.target.value === 'other') {
-      otherJobRoleInput.style.display = 'inherit';
-    } else {
-      otherJobRoleInput.style.display = 'none';
-    }
-  });
+//if other job role is selected, text box appears for user
+otherJobRoleInput.style.display = 'none';
+
+jobRoleInput.addEventListener('change', e => {
+  if (e.target.value === 'other') {
+    otherJobRoleInput.style.display = 'inherit';
+  } else {
+    otherJobRoleInput.style.display = 'none';
+  }
+});
 
 // TSHIRT INFO SECTION
 const shirtDesignInput = document.querySelector('#design');
@@ -108,7 +114,7 @@ const allActivities = document.querySelectorAll('#activities input');
     } else if (activity.name !== "all" && !activity.checked) {
         eventUnchecked(activity, activityCost);
     }
-  costTotalHTML.innerHTML=(`Total: $${totalCost}`);
+    costTotalHTML.innerHTML=(`Total: $${totalCost}`);
   });
 
   function mainEventChecked(activity, activityCost) {
@@ -218,68 +224,68 @@ const allActivities = document.querySelectorAll('#activities input');
   const cvvInput = document.querySelector('#cvv');
 
   creditCardNumberInput.addEventListener("focus", e => {
-        let creditCardFormattingHint = document.querySelector("#cc-hint");
-        creditCardFormattingHint.style.display = "inherit";
-        creditCardFormattingHint.style.color = "black";
+      let creditCardFormattingHint = document.querySelector("#cc-hint");
+      creditCardFormattingHint.style.display = "inherit";
+      creditCardFormattingHint.style.color = "black";
   });
 
+  //Feedback edits: extra if test to determine false is unnecessary
+  //feedback edits: return consistent types --either boolean or string
   function isValidCardNumber (userCreditCard) {
     if (/^\d{13,16}$/.test(userCreditCard)) {
-      return true;
-    } else if (!/^\d{13,16}$/.test(userCreditCard)) {
-      if (userCreditCard === "") {
+      return "valid";
+    } else if (userCreditCard === "") {
         return "blank";
-      } else if (/[^\d]+/.test(userCreditCard)) {
-       return "not a number";
-     } else if (/^\d{1,12}$/.test(userCreditCard)) {
-       return "in progress";
-     } else {
-       return false;
-     }
+    } else if (/[^\d]+/.test(userCreditCard)) {
+     return "not a number";
+    } else if (/^\d{1,12}$/.test(userCreditCard)) {
+     return "in progress";
+    } else {
+     return "invalid";
+    }
   }
-}
 
+  //Feedback edits: extra if test to determine false is unnecessary
+  //feedback edits: return consistent types --either boolean or string
   function isValidZip(userZip) {
     if (/^\d{5}$/.test(userZip)) {
-      return true;
-    } else if (!/^\d{5}$/.test(userZip)) {
-      if (userZip === "") {
+      return "valid";
+    } else if (userZip === "") {
         return "blank";
-      } else if (/[^\d]+/.test(userZip)) {
-       return "not a number";
-     } else if (/^\d{1,4}$/.test(userZip)) {
-       return "in progress";
-     } else {
-        return false;
-      }
-  }
+    } else if (/[^\d]+/.test(userZip)) {
+        return "not a number";
+    } else if (/^\d{1,4}$/.test(userZip)) {
+        return "in progress";
+    } else {
+        return "invalid";
+    }
   }
 
+  //Feedback edits: extra if test to determine false is unnecessary
+  //feedback edits: return consistent types --either boolean or string
   function isValidCvv(userCvv) {
     if (/^\d{3}$/.test(userCvv)) {
-      return true;
-    } else if (!/^\d{3}$/.test(userCvv)) {
-      if (userCvv === "") {
-        return "blank";
-      } else if (/[^\d]+/.test(userCvv)) {
-       return "not a number";
-     } else if (/^\d{1,2}$/.test(userCvv)) {
-       return "in progress";
-     } else {
-        return false;
-      }
-  }
+      return "valid";
+    } else if (userCvv === "") {
+      return "blank";
+    } else if (/[^\d]+/.test(userCvv)) {
+      return "not a number";
+    } else if (/^\d{1,2}$/.test(userCvv)) {
+      return "in progress";
+    } else {
+      return "invalid";
+    }
   }
 
 
 //REAL TIME VALIDATION
-  const formElement = document.querySelector("form");
+const formElement = document.querySelector("form");
 
-  let name;
-  let email;
-  let creditCard;
-  let zipCode;
-  let cvv;
+let name;
+let email;
+let creditCard;
+let zipCode;
+let cvv;
 
 //append error messaging for real time user feedback
 appendErrorMessaging();
@@ -289,10 +295,10 @@ function appendErrorMessaging() {
   for (i=0; i<textInputs.length; i++) {
     let element = textInputs[i];
     let parentElement = textInputs[i].parentNode;
-  errorBlank(element, parentElement);
-  errorContainsNumber(element, parentElement);
-  errorNumbersOnly(element, parentElement);
-}
+      errorBlank(element, parentElement);
+      errorContainsNumber(element, parentElement);
+      errorNumbersOnly(element, parentElement);
+  }
 }
 
 function errorBlank(element, parentElement) {
@@ -305,45 +311,45 @@ function errorBlank(element, parentElement) {
 
 function errorContainsNumber(element, parentElement) {
   if (element.id === "name") {
-  let hint = document.createElement("span");
-  hint.innerHTML = `This field cannot contain numbers.`;
-  parentElement.appendChild(hint);
-  hint.className = ('number');
-  hint.style.display = "none";
-}
+    let hint = document.createElement("span");
+    hint.innerHTML = `This field cannot contain numbers.`;
+    parentElement.appendChild(hint);
+    hint.className = ('number');
+    hint.style.display = "none";
+  }
 }
 
 function errorNumbersOnly(element, parentElement) {
   let section = parentElement.parentNode.parentNode;
   if (section.className === "credit-card-box") {
-  let hint = document.createElement("span");
-  hint.innerHTML = `This field can only contain numbers.`;
-  parentElement.appendChild(hint);
-  hint.className = ('num-only');
-  hint.style.display = "none";
-}
+    let hint = document.createElement("span");
+    hint.innerHTML = `This field can only contain numbers.`;
+    parentElement.appendChild(hint);
+    hint.className = ('num-only');
+    hint.style.display = "none";
+  }
 }
 
-  // listen for all form events and use if statements to determine validity
-  //inspired by https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
-  formElement.addEventListener('keyup', e => {
-    if (e.keyCode !== 9) {
-      if (e.target === userNameInput) {
-        name = createListener(isValidName, e);
-      } else if (e.target === userEmailInput) {
-        email = createListener(isValidEmail, e);
-      } else if (e.target === creditCardNumberInput) {
-        creditCard = createListener(isValidCardNumber, e);
-      } else if (e.target === zipCodeInput) {
-        zipCode = createListener(isValidZip, e);
-      } else if (e.target === cvvInput) {
-        cvv = createListener(isValidCvv, e);
-      }
+// listen for all form events and use if statements to determine validity
+//inspired by https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
+formElement.addEventListener('keyup', e => {
+  if (e.keyCode !== 9) {
+    if (e.target === userNameInput) {
+      name = createListener(isValidName, e);
+    } else if (e.target === userEmailInput) {
+      email = createListener(isValidEmail, e);
+    } else if (e.target === creditCardNumberInput) {
+      creditCard = createListener(isValidCardNumber, e);
+    } else if (e.target === zipCodeInput) {
+      zipCode = createListener(isValidZip, e);
+    } else if (e.target === cvvInput) {
+      cvv = createListener(isValidCvv, e);
     }
-  });
+  }
+});
 
 /*REAL TIME VALIDATION HELPER FUNCTIONS : the following helper functions are
-based on the funtions used in the Regular Expressions in Javascript lessons*/
+based on the funtions used in the Regular Expressions in Javascript Treehouse lessons*/
   //helper function to determine whether input is valid
   function createListener(validator, e) {
       const element = e.target;
@@ -357,36 +363,43 @@ based on the funtions used in the Regular Expressions in Javascript lessons*/
     /*QUESTION: this function seems like it would be easier to read using a switch,
     but I can't pass two argumnts through a switch. Is the following function the
     best way to do this?*/
+    //answer: you nest the switch inside the function.
     function hintManagement(valid, parentElement) {
-      if (valid === true) {
+      let hint = '';
+      let defaultHint = '';
+
+      switch (valid) {
+      case "valid":
           return valid;
-      } else if (valid === "blank") {
+      case "blank":
           parentElement.className = 'not-valid';
-          let hint = parentElement.querySelector('.blank')
+          hint = parentElement.querySelector('.blank')
           hint.style.display = "inherit";
           return valid;
-      } else if (valid === "number") {
+       case "number":
           parentElement.className = 'not-valid';
-          let hint = parentElement.querySelector('.number')
+          hint = parentElement.querySelector('.number')
           hint.style.display = "inherit";
           return valid;
-      } else if (valid === "not a number") {
+      case "not a number":
           parentElement.className = 'not-valid';
-          let hint = parentElement.querySelector('.num-only')
+          hint = parentElement.querySelector('.num-only')
           hint.style.display = "inherit";
           return valid;
-      } else if (valid === "in progress") {
+      case "in progress":
           parentElement.className = 'not-valid';
-          let defaultHint = parentElement.querySelector('.hint');
+          defaultHint = parentElement.querySelector('.hint');
           defaultHint.style.display = "inherit";
+          defaultHint.style.color = "black";
           return valid;
-      } else if (valid === false) {
+      case "invalid":
+      default:
           parentElement.className = "not-valid";
-          let defaultHint = parentElement.querySelector('.hint');
+          defaultHint = parentElement.querySelector('.hint');
           defaultHint.style.display = "inherit";
-          defaultHint.style.display = "red";
+          defaultHint.style.color = "red";
           return valid;
-    }
+        }
     }
 
   // helper function to update styles when errors are resolved
@@ -403,7 +416,7 @@ based on the funtions used in the Regular Expressions in Javascript lessons*/
     creditCard = hintManagement(isValidCardNumber(creditCardNumberInput.value), creditCardNumberInput.parentNode);
     zipCode = hintManagement(isValidZip(zipCodeInput.value), zipCodeInput.parentNode);
     cvv = hintManagement(isValidCvv(cvvInput.value), cvvInput.parentNode);
-    if (creditCard === true && zipCode === true && cvv === true) {
+    if (creditCard === "valid" && zipCode === "valid" && cvv === "valid") {
       return true;
     } else {
       return false;
@@ -415,11 +428,11 @@ formElement.addEventListener('submit', e => {
   name = hintManagement(isValidName(userNameInput.value), userNameInput.parentNode);
   email = hintManagement(isValidEmail(userEmailInput.value), userEmailInput.parentNode);
 
-  if (name !== true) {
+  if (name !== "valid") {
     e.preventDefault();
   }
 
-  if (email !== true) {
+  if (email !== "valid") {
       e.preventDefault();
     }
 
