@@ -23,4 +23,4 @@ CVV: "Credit card number must be 3 digits"
       "This field cannot be blank"
       "This field can only contain numbers"
 
-Activities Section does how allow user to sign up for conflicting events.
+Activities Section does not allow user to sign up for conflicting events.
